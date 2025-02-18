@@ -1,0 +1,2447 @@
+{
+	"info": {
+		"_postman_id": "2c4afc09-617e-4955-9a4c-84fe9d5f014c",
+		"name": "Todo_QACart_Project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28607276"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Registration",
+					"item": [
+						{
+							"name": "1_Happy-Case",
+							"item": [
+								{
+									"name": "Registration",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													" var jsonData = pm.response.json();\r",
+													"\r",
+													"pm.test(\"Status code is 201\",function () {\r",
+													"    pm.response.to.have.status(201)\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check user firstName\", function () {\r",
+													"    pm.expect(jsonData.firstName).to.eql(pm.globals.get(\"userFN\"));\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is Created\", function () {\r",
+													"    pm.response.to.have.status(\"Created\");\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"123456789\",\r\n    \"firstName\": \"{{userFN}}\",\r\n    \"lastName\": \"Mohamed\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/users/register",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												"register"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "2_Email-Validation",
+							"item": [
+								{
+									"name": "Check Duplicate",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = pm.response.json();\r",
+													"\r",
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check user Error Message\", function (){\r",
+													"    pm.expect(jsonData.message).to.eql(\"Email is already exists in the Database\")\r",
+													"})\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is Bad Request\", function () {\r",
+													"    pm.response.to.have.status(\"Bad Request\");\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"123456789\",\r\n    \"firstName\": \"Ziad\",\r\n    \"lastName\": \"Mohamed\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/users/register",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												"register"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check empty email",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = pm.response.json();\r",
+													"\r",
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is Bad Request\", function () {\r",
+													"    pm.response.to.have.status(\"Bad Request\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check user Error Message\",function(){\r",
+													"    pm.expect(jsonData.message).to.eql(\"\\\"email\\\" is not allowed to be empty\")\r",
+													"})\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"\",\r\n    \"password\": \"123456789\",\r\n    \"firstName\": \"Ziad\",\r\n    \"lastName\": \"Mohamed\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/users/register",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												"register"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check invalid email",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = pm.response.json();\r",
+													"\r",
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check user Error Message\",function(){\r",
+													"    pm.expect(jsonData.message).to.eql(\"\\\"email\\\" must be a valid email\")\r",
+													"})\r",
+													"\r",
+													"pm.test(\"Status code name is Bad Request\", function () {\r",
+													"    pm.response.to.have.status(\"Bad Request\");\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"elshihyziadgmail.com\",\r\n    \"password\": \"123456789\",\r\n    \"firstName\": \"Ziad\",\r\n    \"lastName\": \"Mohamed\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/users/register",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												"register"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "3_Password-Validation",
+							"item": [
+								{
+									"name": "Check empty password",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonDate  = pm.response.json();\r",
+													"\r",
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is Bad Request\", function () {\r",
+													"    pm.response.to.have.status(\"Bad Request\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check user Error Message\",function(){\r",
+													"    pm.expect(jsonDate.message).to.eql(\"\\\"password\\\" is not allowed to be empty\")\r",
+													"})"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"\",\r\n    \"firstName\": \"{{userFN}}\",\r\n    \"lastName\": \"Mohamed\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/users/register",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												"register"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check invalid password length",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonDate  = pm.response.json();\r",
+													"\r",
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is Bad Request\", function () {\r",
+													"    pm.response.to.have.status(\"Bad Request\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check user Error Message\",function(){\r",
+													"    pm.expect(jsonDate.message).to.eql(\"\\\"password\\\" length must be at least 8 characters long\")\r",
+													"})"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"123456\",\r\n    \"firstName\": \"{{userFN}}\",\r\n    \"lastName\": \"Mohamed\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/users/register",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												"register"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "4_Name-Validation",
+							"item": [
+								{
+									"name": "Check Empty firstname",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonDate  = pm.response.json();\r",
+													"\r",
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is Bad Request\", function () {\r",
+													"    pm.response.to.have.status(\"Bad Request\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check user Error Message\",function(){\r",
+													"    pm.expect(jsonDate.message).to.eql(\"\\\"firstName\\\" is not allowed to be empty\")\r",
+													"})"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"123456789\",\r\n    \"firstName\": \"\",\r\n    \"lastName\": \"Mohamed\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/users/register",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												"register"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check invalid firstname length",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonDate  = pm.response.json();\r",
+													"\r",
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is Bad Request\", function () {\r",
+													"    pm.response.to.have.status(\"Bad Request\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check user Error Message\",function(){\r",
+													"    pm.expect(jsonDate.message).to.eql(\"\\\"firstName\\\" length must be at least 2 characters long\")\r",
+													"})"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"123456789\",\r\n    \"firstName\": \"z\",\r\n    \"lastName\": \"Mohamed\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/users/register",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												"register"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check  firstname specialCharacters",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonDate  = pm.response.json();\r",
+													"\r",
+													"pm.test(\"Status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is Created\", function () {\r",
+													"    pm.response.to.have.status(\"Created\");\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"123456789\",\r\n    \"firstName\": \"A*-\",\r\n    \"lastName\": \"Mohamed\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/users/register",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												"register"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check Empty lastname",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonDate  = pm.response.json();\r",
+													"\r",
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is Bad Request\", function () {\r",
+													"    pm.response.to.have.status(\"Bad Request\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check user Error Message\",function(){\r",
+													"    pm.expect(jsonDate.message).to.eql(\"\\\"lastName\\\" is not allowed to be empty\")\r",
+													"})"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"123456789\",\r\n    \"firstName\": \"Ziad\",\r\n    \"lastName\": \"\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/users/register",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												"register"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check invalid lastname length",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonDate  = pm.response.json();\r",
+													"\r",
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is Bad Request\", function () {\r",
+													"    pm.response.to.have.status(\"Bad Request\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check user Error Message\",function(){\r",
+													"    pm.expect(jsonDate.message).to.eql(\"\\\"lastName\\\" length must be at least 2 characters long\")\r",
+													"})"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"123456789\",\r\n    \"firstName\": \"ziad\",\r\n    \"lastName\": \"m\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/users/register",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												"register"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check lastname specialCharacters",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonDate  = pm.response.json();\r",
+													"\r",
+													"pm.test(\"Status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is Created\", function () {\r",
+													"    pm.response.to.have.status(\"Created\");\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"123456789\",\r\n    \"firstName\": \"Ziad\",\r\n    \"lastName\": \"A*-\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/users/register",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												"register"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Login",
+					"item": [
+						{
+							"name": "1_Happy-Case",
+							"item": [
+								{
+									"name": "Login",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													" var jsonData = pm.response.json();\r",
+													"\r",
+													"pm.test(\"Status code is 200\",function () {\r",
+													"    pm.response.to.have.status(200)\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check user firstName\", function () {\r",
+													"    pm.expect(jsonData.firstName).to.eql(pm.globals.get(\"userFN\"));\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is OK\", function () {\r",
+													"    pm.response.to.have.status(\"OK\");\r",
+													"});\r",
+													"\r",
+													"pm.environment.set(\"token\", jsonData.access_token);"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"123456789\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/users/login",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												"login"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "2_Email-Validation",
+							"item": [
+								{
+									"name": "Check Wrong email",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = pm.response.json();\r",
+													"\r",
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check user Error Message\", function (){\r",
+													"    pm.expect(jsonData.message).to.eql(\"We could not find the email in the database\")\r",
+													"})\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is Bad Request\", function () {\r",
+													"    pm.response.to.have.status(\"Bad Request\");\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"elshihyzi@gmail.com\",\r\n    \"password\": \"123456789\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/users/login",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												"login"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check empty email",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = pm.response.json();\r",
+													"\r",
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is Bad Request\", function () {\r",
+													"    pm.response.to.have.status(\"Bad Request\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check user Error Message\",function(){\r",
+													"    pm.expect(jsonData.message).to.eql(\"\\\"email\\\" is not allowed to be empty\")\r",
+													"})\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"\",\r\n    \"password\": \"123456789\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/users/login",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												"login"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check invalid email",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = pm.response.json();\r",
+													"\r",
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check user Error Message\",function(){\r",
+													"    pm.expect(jsonData.message).to.eql(\"\\\"email\\\" must be a valid email\")\r",
+													"})\r",
+													"\r",
+													"pm.test(\"Status code name is Bad Request\", function () {\r",
+													"    pm.response.to.have.status(\"Bad Request\");\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"elshihyziadgmail.com\",\r\n    \"password\": \"123456789\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/users/login",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												"login"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "3_Password-Validation",
+							"item": [
+								{
+									"name": "Check empty password",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonDate  = pm.response.json();\r",
+													"\r",
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is Bad Request\", function () {\r",
+													"    pm.response.to.have.status(\"Bad Request\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check user Error Message\",function(){\r",
+													"    pm.expect(jsonDate.message).to.eql(\"Please Fill a correct Password\")\r",
+													"})"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/users/login",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												"login"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check invalid password length",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonDate  = pm.response.json();\r",
+													"\r",
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is Bad Request\", function () {\r",
+													"    pm.response.to.have.status(\"Bad Request\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check user Error Message\",function(){\r",
+													"    pm.expect(jsonDate.message).to.eql(\"\\\"password\\\" length must be at least 8 characters long\")\r",
+													"})"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"12\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/users/login",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												"login"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check wrong password",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonDate  = pm.response.json();\r",
+													"\r",
+													"pm.test(\"Status code is 401\", function () {\r",
+													"    pm.response.to.have.status(401);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is Unauthorized\", function () {\r",
+													"    pm.response.to.have.status(\"Unauthorized\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check user Error Message\",function(){\r",
+													"    pm.expect(jsonDate.message).to.eql(\"The email and password combination is not correct, please fill a correct email and password\")\r",
+													"})"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"12345678910\"\r\n\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/users/login",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												"login"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Tasks",
+			"item": [
+				{
+					"name": "Tasks with Auth",
+					"item": [
+						{
+							"name": "Add",
+							"item": [
+								{
+									"name": "Registration",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													" var jsonData = pm.response.json();\r",
+													"\r",
+													"pm.test(\"Status code is 201\",function () {\r",
+													"    pm.response.to.have.status(201)\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check user firstName\", function () {\r",
+													"    pm.expect(jsonData.firstName).to.eql(pm.globals.get(\"userFN\"));\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is Created\", function () {\r",
+													"    pm.response.to.have.status(\"Created\");\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"123456789\",\r\n    \"firstName\": \"{{userFN}}\",\r\n    \"lastName\": \"Mohamed\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/users/register",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												"register"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Login",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													" var jsonData = pm.response.json();\r",
+													"\r",
+													"pm.test(\"Status code is 200\",function () {\r",
+													"    pm.response.to.have.status(200)\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check user firstName\", function () {\r",
+													"    pm.expect(jsonData.firstName).to.eql(pm.globals.get(\"userFN\"));\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is OK\", function () {\r",
+													"    pm.response.to.have.status(\"OK\");\r",
+													"});\r",
+													"\r",
+													"pm.environment.set(\"token\", jsonData.access_token);"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"123456789\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/users/login",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												"login"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Add Task",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													" var jsonData = pm.response.json();\r",
+													"pm.environment.set(\"task_id\", jsonData._id);\r",
+													"pm.test(\"Status code is 201\",function () {\r",
+													"    pm.response.to.have.status(201)\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check user Task name\", function () {\r",
+													"    pm.expect(jsonData.item).to.eql(\"Selenium\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is Created\", function () {\r",
+													"    pm.response.to.have.status(\"Created\");\r",
+													"});\r",
+													"\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"item\": \"Selenium\",\r\n    \"isCompleted\": false\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/tasks",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"tasks"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Add empty Task",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													" var jsonData = pm.response.json();\r",
+													"\r",
+													"pm.environment.set(\"task_id\", jsonData._id);\r",
+													"\r",
+													"pm.test(\"Status code is 400\",function () {\r",
+													"    pm.response.to.have.status(400)\r",
+													"})\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is Bad Request\", function () {\r",
+													"    pm.response.to.have.status(\"Bad Request\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check not to add Empty task\",function(){\r",
+													"    pm.expect(jsonData.message).to.eql(\"\\\"item\\\" is not allowed to be empty\")\r",
+													"})\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"item\": \"\",\r\n    \"isCompleted\": false\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/tasks",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"tasks"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Add invalid Task",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													" var jsonData = pm.response.json();\r",
+													"\r",
+													"pm.environment.set(\"task_id\", jsonData._id);\r",
+													"\r",
+													"pm.test(\"Status code is 400\",function () {\r",
+													"    pm.response.to.have.status(400)\r",
+													"})\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is Bad Request\", function () {\r",
+													"    pm.response.to.have.status(\"Bad Request\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check not to add Empty task\",function(){\r",
+													"    pm.expect(jsonData.message).to.eql(\"\\\"item\\\" length must be at least 3 characters long\")\r",
+													"})\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"item\": \"ZZ\",\r\n    \"isCompleted\": false\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/tasks",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"tasks"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Add Task without item",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													" var jsonData = pm.response.json();\r",
+													"\r",
+													"pm.environment.set(\"task_id\", jsonData._id);\r",
+													"\r",
+													"pm.test(\"Status code is 400\",function () {\r",
+													"    pm.response.to.have.status(400)\r",
+													"})\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is Bad Request\", function () {\r",
+													"    pm.response.to.have.status(\"Bad Request\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check not to add Empty task\",function(){\r",
+													"    pm.expect(jsonData.message).to.eql(\"\\\"item\\\" is required\")\r",
+													"})\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"isCompleted\": false\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/tasks",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"tasks"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Add Task with number in name",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													" var jsonData = pm.response.json();\r",
+													"\r",
+													"pm.environment.set(\"task_id\", jsonData._id);\r",
+													"\r",
+													"pm.test(\"Status code is 400\",function () {\r",
+													"    pm.response.to.have.status(400)\r",
+													"})\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is Bad Request\", function () {\r",
+													"    pm.response.to.have.status(\"Bad Request\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check not to add Empty task\",function(){\r",
+													"    pm.expect(jsonData.message).to.eql(\"\\\"item\\\" must be a string\")\r",
+													"})\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"item\": 10,\r\n    \"isCompleted\": false\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/tasks",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"tasks"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Add Task with only spaces in name",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													" var jsonData = pm.response.json();\r",
+													"\r",
+													"pm.environment.set(\"task_id\", jsonData._id);\r",
+													"\r",
+													"pm.test(\"Status code is 400\",function () {\r",
+													"    pm.response.to.have.status(400)\r",
+													"})\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is Bad Request\", function () {\r",
+													"    pm.response.to.have.status(\"Bad Request\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check not to add Empty task\",function(){\r",
+													"    pm.expect(jsonData.message).to.eql(\"\\\"item\\\" must be a string\")\r",
+													"})\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"item\": \"   \",\r\n    \"isCompleted\": false\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/tasks",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"tasks"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Add Task without is completed",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													" var jsonData = pm.response.json();\r",
+													"\r",
+													"pm.environment.set(\"task_id\", jsonData._id);\r",
+													"\r",
+													"pm.test(\"Status code is 400\",function () {\r",
+													"    pm.response.to.have.status(400)\r",
+													"})\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is Bad Request\", function () {\r",
+													"    pm.response.to.have.status(\"Bad Request\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check not to add Empty task\",function(){\r",
+													"    pm.expect(jsonData.message).to.eql(\"\\\"isCompleted\\\" is required\")\r",
+													"})\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"item\": \"sdasda\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/tasks",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"tasks"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Add Task with invalid is completed",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													" var jsonData = pm.response.json();\r",
+													"\r",
+													"pm.environment.set(\"task_id\", jsonData._id);\r",
+													"\r",
+													"pm.test(\"Status code is 400\",function () {\r",
+													"    pm.response.to.have.status(400)\r",
+													"})\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is Bad Request\", function () {\r",
+													"    pm.response.to.have.status(\"Bad Request\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check not to add Empty task\",function(){\r",
+													"    pm.expect(jsonData.message).to.eql(\"\\\"isCompleted\\\" must be a boolean\")\r",
+													"})\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"item\": \"Selenium\",\r\n    \"isCompleted\": 0\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/tasks",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"tasks"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Complete",
+							"item": [
+								{
+									"name": "Add Task",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													" var jsonData = pm.response.json();\r",
+													"pm.environment.set(\"task_id\", jsonData._id);\r",
+													"pm.test(\"Status code is 201\",function () {\r",
+													"    pm.response.to.have.status(201)\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check user Task name\", function () {\r",
+													"    pm.expect(jsonData.item).to.eql(\"Selenium\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is Created\", function () {\r",
+													"    pm.response.to.have.status(\"Created\");\r",
+													"});\r",
+													"\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"item\": \"Selenium\",\r\n    \"isCompleted\": false\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/tasks",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"tasks"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Change complete status",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													" var jsonData = pm.response.json();\r",
+													"pm.environment.set(\"task_id\", jsonData._id);\r",
+													"pm.test(\"Status code is 200\",function () {\r",
+													"    pm.response.to.have.status(200)\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check user Task name\", function () {\r",
+													"    pm.expect(jsonData.item).to.eql(\"Selenium\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is Ok\", function () {\r",
+													"    pm.response.to.have.status(\"Ok\");\r",
+													"});\r",
+													"\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"item\": \"Selenium\",\r\n    \"isCompleted\": true\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/tasks/{{task_id}}",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"tasks",
+												"{{task_id}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Change complete status to uncomplete",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													" var jsonData = pm.response.json();\r",
+													"pm.environment.set(\"task_id\", jsonData._id);\r",
+													"pm.test(\"Status code is 200\",function () {\r",
+													"    pm.response.to.have.status(200)\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check user Task name\", function () {\r",
+													"    pm.expect(jsonData.item).to.eql(\"Selenium\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is Ok\", function () {\r",
+													"    pm.response.to.have.status(\"Ok\");\r",
+													"});\r",
+													"\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"item\": \"Selenium\",\r\n    \"isCompleted\": false\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/tasks/{{task_id}}",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"tasks",
+												"{{task_id}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Change task name",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													" var jsonData = pm.response.json();\r",
+													"pm.environment.set(\"task_id\", jsonData._id);\r",
+													"pm.test(\"Status code is 200\",function () {\r",
+													"    pm.response.to.have.status(200)\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check user Task name\", function () {\r",
+													"    pm.expect(jsonData.item).to.eql(\"Selenium\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Content-Type is present\", function () {\r",
+													"    pm.response.to.have.header(\"Content-Type\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code name is Ok\", function () {\r",
+													"    pm.response.to.have.status(\"Ok\");\r",
+													"});\r",
+													"\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"item\": \"Manual\",\r\n    \"isCompleted\": true\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{Base_url}}/api/v1/tasks/{{task_id}}",
+											"host": [
+												"{{Base_url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"tasks",
+												"{{task_id}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Get all tasks",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Status code is 200\",function () {\r",
+											"    pm.response.to.have.status(200)\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Content-Type is present\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code name is OK\", function () {\r",
+											"    pm.response.to.have.status(\"OK\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Base_url}}/api/v1/tasks",
+									"host": [
+										"{{Base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"tasks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Status code is 200\",function () {\r",
+											"    pm.response.to.have.status(200)\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Content-Type is present\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code name is OK\", function () {\r",
+											"    pm.response.to.have.status(\"OK\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Base_url}}/api/v1/tasks/{{task_id}}",
+									"host": [
+										"{{Base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"tasks",
+										"{{task_id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Tasks without Auth",
+					"item": [
+						{
+							"name": "Get all tasks",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code name is Unauthorized\", function () {\r",
+											"    pm.response.to.have.status(\"Unauthorized\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Check item Name\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.message).to.eql(\"Unauthorized, please insert a correct token\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Base_url}}/api/v1/tasks",
+									"host": [
+										"{{Base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"tasks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code name is Unauthorized\", function () {\r",
+											"    pm.response.to.have.status(\"Unauthorized\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Check item Name\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.message).to.eql(\"Unauthorized, please insert a correct token\");\r",
+											"})"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"item\": \"manual\",\r\n    \"isComplete\": false\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Base_url}}/api/v1/tasks",
+									"host": [
+										"{{Base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"tasks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Edit task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code name is Unauthorized\", function () {\r",
+											"    pm.response.to.have.status(\"Unauthorized\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Check item Name\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.message).to.eql(\"Unauthorized, please insert a correct token\");\r",
+											"})"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"item\": \"man\",\r\n    \"isCompleted\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Base_url}}/api/v1/tasks/{{task_id}}",
+									"host": [
+										"{{Base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"tasks",
+										"{{task_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code name is Unauthorized\", function () {\r",
+											"    pm.response.to.have.status(\"Unauthorized\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Check item Name\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.message).to.eql(\"Unauthorized, please insert a correct token\");\r",
+											"})"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{Base_url}}/api/v1/tasks/{{task_id}}",
+									"host": [
+										"{{Base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"tasks",
+										"{{task_id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
